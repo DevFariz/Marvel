@@ -1,6 +1,6 @@
 class MarvelService {
     _abiBase = 'https://gateway.marvel.com:443/v1/public/';
-    _abiKey = 'apikey=a8ffa63d4c24f9483538434a1fe14158'
+    _abiKey = 'apikey=a8ffa63d4c24f9483538434a1fe14158';
 
     getResource = async (url) => {
         let res = await fetch(url);
@@ -12,12 +12,24 @@ class MarvelService {
         return await res.json();
     }
 
-    getAllCharacters = () => {
-        return this.getResource(`${this._abiBase}characters?limit=9&offset=240&${this._abiKey}`)
+    getAllCharacters = async () => {
+        const res = await this.getResource(`${this._abiBase}characters?limit=9&offset=240&${this._abiKey}`);
+        return res.data.results.map(this._transformCharacter)
     } 
     
-    getCharacter = (id) => {
-        return this.getResource(`${this._abiBase}characters/${id}?${this._abiKey}`)
+    getCharacter = async (id) => {
+        const res = await this.getResource(`${this._abiBase}characters/${id}?${this._abiKey}`)
+        return this._transformCharacter(res.data.results[0]);
+    }
+
+    _transformCharacter = (char) => {
+        return {
+            name: char.name,
+            description: char.description ? `${char.description.slice(0, 210)}...` : 'There is no description for this character',
+            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
+            homepage: char.urls[0].url,
+            wiki: char.urls[1].url
+        }
     }
 }
 
