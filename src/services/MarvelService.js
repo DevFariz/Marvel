@@ -44,13 +44,16 @@ const useMarvelService = () => {
         return {
             id: comic.id,
             title: comic.title,
-            price: comic.prices[0].price,
+            description: comic.description || "There are no description",
+            pageCount: `${comic.pageCount} pages` || "No information",
+            price: comic.prices[0].price !== 0 ? `${comic.prices[0].price}$` : "Not available",
+            language: comic.textObjects.language || 'en-us',
             thumbnail: comic.thumbnail.path + "." + comic.thumbnail.extension,
             homepage: comic.urls[0].url
         }
     }
 
-    return {loading, error, clearError, getAllCharacters, getCharacter, getAllComics}
+    return {loading, error, clearError, getAllCharacters, getCharacter, getAllComics, getComic}
 }
 
 export default useMarvelService;
