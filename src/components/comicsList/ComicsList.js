@@ -37,15 +37,13 @@ const ComicsList = () => {
         setComicsEnded(ended);
     }
 
-    console.log(('fds'));
-
     const items = comicsList.map(item => {
         return (
             <li key={item.id} className="comics__item">
-                    <a href="#">
+                    <a href="#a">
                         <img src={item.thumbnail} alt={item.title} className="comics__item-img"/>
                         <div className="comics__item-name">{item.title}</div>
-                        <div className="comics__item-price">{item.price}</div>
+                        <div className="comics__item-price">{item.price}$</div>
                     </a>
             </li>
         )
